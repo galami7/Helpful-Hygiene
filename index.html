@@ -37,7 +37,7 @@ body{font-family:Inter,sans-serif}
 <div class="lg:flex lg:gap-12">
 <div class="lg:w-3/5 mb-5 lg:mb-0">
 <div class="lg:hidden">
-<div class="aspect-[5/4] bg-gray-50 rounded-lg overflow-hidden mb-3"><img :src="images[currentImageIndex]" alt="Helpful Hygiene Mask Case" class="w-full h-full object-cover"></div>
+<div class="bg-gray-50 rounded-lg overflow-hidden mb-3 flex items-center justify-center min-h-[260px]"><img :src="images[currentImageIndex]" alt="Helpful Hygiene Mask Case" class="w-full max-h-[420px] object-contain"></div>
 <div class="flex gap-2 overflow-x-auto hide-scrollbar">
 <template x-for="(img,index) in images" :key="index">
 <button @click="currentImageIndex=index" class="w-14 h-14 flex-shrink-0 rounded-md border overflow-hidden" :class="currentImageIndex===index?'border-brand':'border-transparent opacity-60'"><img :src="img" class="w-full h-full object-cover"></button>
@@ -64,17 +64,17 @@ body{font-family:Inter,sans-serif}
 <button @click="selectColor('white')" class="w-10 h-10 rounded-full bg-white" :class="selectedColor==='white'?'ring-2 ring-brand ring-offset-2':'ring-1 ring-gray-200'"></button>
 <button @click="selectColor('pink')" class="w-10 h-10 rounded-full" :class="selectedColor==='pink'?'ring-2 ring-brand ring-offset-2':'ring-1 ring-gray-200'" style="background-color:#f9a8d4"></button>
 </div></div>
-<div class="mb-4">
-<p class="text-[11px] uppercase tracking-wider text-gray-400 mb-2">Bundles</p>
-<div class="grid grid-cols-3 gap-1.5">
-<button @click="selectedBundle='1'" class="text-center border rounded px-1.5 py-2" :class="selectedBundle==='1'?'border-brand text-gray-900':'border-gray-200 text-gray-500'"><p class="text-[11px] font-medium">1</p><p class="text-[10px]">$4.99</p></button>
-<button @click="selectedBundle='2'" class="text-center border rounded px-1.5 py-2" :class="selectedBundle==='2'?'border-brand text-gray-900':'border-gray-200 text-gray-500'"><p class="text-[11px] font-medium">2-pack</p><p class="text-[10px]">$8.99</p></button>
-<button @click="selectedBundle='3'" class="text-center border rounded px-1.5 py-2" :class="selectedBundle==='3'?'border-brand text-gray-900':'border-gray-200 text-gray-500'"><p class="text-[11px] font-medium">3-pack</p><p class="text-[10px]">$12.99</p></button>
-</div></div>
 <button type="button" class="atc-btn w-full bg-brand hover:bg-brand-dark text-white font-medium text-sm py-4 rounded-md" @click="addToCart()">Add to cart</button>
 <p class="text-center text-xs text-brand/70 mt-3 font-medium">Portfolio piece — checkout is a demo</p>
 <div class="mt-4 mb-6"><p class="text-[10px] uppercase tracking-wider text-gray-400 text-center mb-2">Secure checkout</p>
 <div class="flex justify-center gap-2"><span class="pay-mark" style="color:#1a1f71">VISA</span><span class="pay-mark">●●</span><span class="pay-mark" style="color:#2e77bc">AMEX</span><span class="pay-mark" style="color:#003087">PayPal</span></div></div>
+<div class="mb-6">
+<p class="text-[11px] uppercase tracking-wider text-gray-400 text-center mb-2">Bundles</p>
+<div class="grid grid-cols-3 gap-1.5">
+<button @click="selectedBundle='2'" class="text-center border rounded px-1.5 py-2" :class="selectedBundle==='2'?'border-brand text-gray-900':'border-gray-200 text-gray-500'"><p class="text-[11px] font-medium">2-pack</p><p class="text-[10px]">$8.99</p></button>
+<button @click="selectedBundle='3'" class="text-center border rounded px-1.5 py-2" :class="selectedBundle==='3'?'border-brand text-gray-900':'border-gray-200 text-gray-500'"><p class="text-[11px] font-medium">3-pack</p><p class="text-[10px]">$12.99</p></button>
+<button @click="selectedBundle='5'" class="text-center border rounded px-1.5 py-2" :class="selectedBundle==='5'?'border-brand text-gray-900':'border-gray-200 text-gray-500'"><p class="text-[11px] font-medium">5-pack</p><p class="text-[10px]">$19.99</p></button>
+</div></div>
 <div class="border-t border-gray-100">
 <div x-data="{open:true}" class="border-b border-gray-100">
 <button @click="open=!open" class="w-full py-4 flex justify-between text-sm font-medium"><span>The product</span><i class="fa-solid text-xs text-brand/70" :class="open?'fa-minus':'fa-plus'"></i></button>
@@ -124,12 +124,12 @@ body{font-family:Inter,sans-serif}
 <script>
 document.addEventListener('alpine:init',()=>{
 Alpine.data('productPage',()=>({
-selectedColor:'blue',selectedBundle:'1',currentImageIndex:0,cartCount:0,cartPulse:false,menuOpen:false,
+selectedColor:'blue',selectedBundle:null,currentImageIndex:0,cartCount:0,cartPulse:false,menuOpen:false,
 commonImages:['assets/03-Lifestyle-Hands-Loading.png','assets/04-Lifestyle-All-Colors.png','assets/05-Measurements.png','assets/06-Lifestyle-Closing.png','assets/07-Lifestyle-Color-Range.png'],
 colorData:{white:{images:['assets/01-White-Closed-White-BG.jpg','assets/02-White-Open-White-BG.jpg']},blue:{images:['assets/01-Blue-Closed-White-BG.jpg','assets/02-Blue-Open-White-BG.jpg']},pink:{images:['assets/01-Pink-Closed-White-BG.jpg','assets/02-Pink-Open-White-BG.png']}},
 get images(){return [...this.colorData[this.selectedColor].images,...this.commonImages]},
 selectColor(c){this.selectedColor=c;this.currentImageIndex=0},
-addToCart(){this.cartCount+=this.selectedBundle==='3'?3:this.selectedBundle==='2'?2:1;this.cartPulse=true;setTimeout(()=>this.cartPulse=false,450)}
+addToCart(){this.cartCount+=this.selectedBundle==='5'?5:this.selectedBundle==='3'?3:this.selectedBundle==='2'?2:1;this.cartPulse=true;setTimeout(()=>this.cartPulse=false,450)}
 }));
 Alpine.data('reviewsBlock',()=>({
 index:0,
