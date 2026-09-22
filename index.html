@@ -1,318 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Helpful Hygiene™</title>
-    <link rel="icon" href="assets/favicon.png" type="image/png">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            DEFAULT: '#e63946',
-                            dark: '#b4232e',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .pay-mark {
-            height: 22px; min-width: 36px; padding: 0 7px;
-            border: 1px solid #e5e7eb; border-radius: 4px; background: #fff;
-            display: inline-flex; align-items: center; justify-content: center;
-            font-size: 10px; font-weight: 700; letter-spacing: 0.02em; color: #374151;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#e63946">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Helpful Hygiene™</title>
+<link rel="icon" href="assets/favicon.png" type="image/png">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{colors:{brand:{DEFAULT:'#e63946',dark:'#b4232e'}},fontFamily:{sans:['Inter','system-ui','sans-serif']}}}}</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+body{font-family:Inter,sans-serif}
+.hide-scrollbar::-webkit-scrollbar{display:none}
+.hide-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
+.pay-mark{height:22px;min-width:36px;padding:0 7px;border:1px solid #e5e7eb;border-radius:4px;background:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#374151}
+.header-bar{transition:background-color .35s ease,border-color .35s ease}
+.header-bar.is-red{background-color:#e63946;border-color:#e63946;color:#fff}
+.header-bar.is-red img{filter:brightness(0) invert(1)}
+.header-bar.is-red button{color:#fff}
+.atc-btn{transition:transform .12s ease}
+.atc-btn:active{transform:scale(.97)}
+.cart-bounce{animation:cartpop .45s ease}
+@keyframes cartpop{0%{transform:scale(1)}40%{transform:scale(1.25) rotate(-8deg)}100%{transform:scale(1)}}
+@media(max-width:640px){.product-title{font-size:1.35rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
+</style>
 </head>
 <body class="bg-white text-gray-800" x-data="productPage()">
-
-    <div class="bg-brand text-white text-center py-2 text-xs font-medium tracking-wide">
-        Worldwide shipping was included on every order
-    </div>
-
-    <header class="bg-white sticky top-0 z-50 border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex-1 flex items-center">
-                <button class="text-gray-500 hover:text-gray-900 transition mr-4 lg:hidden" aria-label="Menu" @click="alert('Archive site \u2014 navigation is inactive')">
-                    <i class="fa-solid fa-bars text-lg"></i>
-                </button>
-            </div>
-            <div class="flex-shrink-0 flex justify-center">
-                <img src="assets/logo.png" alt="Helpful Hygiene" class="h-8 w-auto">
-            </div>
-            <div class="flex-1 flex items-center justify-end">
-                <button class="text-gray-400 relative cursor-default" aria-label="Cart" title="Purchasing is inactive">
-                    <i class="fa-solid fa-bag-shopping text-xl"></i>
-                    <span class="absolute -top-1 -right-1.5 bg-gray-300 text-white text-[9px] font-bold h-3.5 w-3.5 rounded-full flex items-center justify-center">0</span>
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-        <div class="lg:flex lg:gap-12 xl:gap-16">
-            <div class="lg:w-3/5 xl:w-2/3 mb-8 lg:mb-0">
-                <div class="lg:hidden">
-                    <div class="aspect-square bg-gray-50 rounded-lg overflow-hidden relative mb-4">
-                        <img :src="images[currentImageIndex]" alt="Helpful Hygiene Mask Case" class="w-full h-full object-cover" x-transition.opacity>
-                    </div>
-                    <div class="flex gap-3 overflow-x-auto hide-scrollbar pb-2 snap-x">
-                        <template x-for="(img, index) in images" :key="index">
-                            <button @click="currentImageIndex = index" class="w-20 h-20 flex-shrink-0 rounded-md border overflow-hidden bg-gray-50 snap-start transition" :class="currentImageIndex === index ? 'border-brand' : 'border-transparent opacity-60 hover:opacity-100'">
-                                <img :src="img" alt="" class="w-full h-full object-cover">
-                            </button>
-                        </template>
-                    </div>
-                </div>
-                <div class="hidden lg:grid grid-cols-2 gap-4">
-                    <template x-for="(img, index) in images" :key="index">
-                        <div class="aspect-square bg-gray-50 rounded-lg overflow-hidden border border-gray-100" :class="index === 0 ? 'col-span-2 aspect-[4/3]' : ''">
-                            <img :src="img" alt="Helpful Hygiene Mask Case" class="w-full h-full object-cover hover:scale-[1.03] transition duration-500">
-                        </div>
-                    </template>
-                </div>
-            </div>
-
-            <div class="lg:w-2/5 xl:w-1/3 flex flex-col">
-                <div class="lg:sticky lg:top-24">
-                    <div class="flex items-center gap-2 mb-3">
-                        <div class="flex text-brand text-xs gap-0.5">
-                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
-                        </div>
-                        <button class="text-xs text-gray-500 border-b border-gray-300 pb-0.5 hover:text-gray-900" @click="document.getElementById('reviews').scrollIntoView({behavior: 'smooth'})">128 reviews</button>
-                    </div>
-                    <p class="text-[11px] uppercase tracking-[0.16em] text-brand font-semibold mb-2">Helpful Hygiene™</p>
-                    <h1 class="text-3xl font-semibold text-gray-900 mb-3 tracking-tight">Helpful Hygiene Mask Case</h1>
-                    <div class="flex items-baseline gap-3 mb-5">
-                        <span class="text-2xl font-semibold text-gray-900">$4.99</span>
-                    </div>
-                    <p class="text-gray-600 text-sm mb-6 leading-relaxed">
-                        A used mask does not belong in a pocket. This hard case was a pocket-sized place to keep a surgical or KN95 mask clean between uses — wipeable, slim, and built for the bag you already carry.
-                    </p>
-                    <div class="mb-7 border-t border-gray-100 pt-6">
-                        <div class="flex justify-between items-center mb-3">
-                            <span class="text-sm text-gray-700">Color: <span class="font-medium text-gray-900 capitalize" x-text="selectedColor"></span></span>
-                        </div>
-                        <div class="flex gap-3">
-                            <button @click="selectColor('blue')" class="w-10 h-10 rounded-full focus:outline-none" :class="selectedColor === 'blue' ? 'ring-2 ring-brand ring-offset-2' : 'ring-1 ring-gray-200'" style="background-color: #93c5fd;" aria-label="Blue"></button>
-                            <button @click="selectColor('white')" class="w-10 h-10 rounded-full focus:outline-none bg-white" :class="selectedColor === 'white' ? 'ring-2 ring-brand ring-offset-2' : 'ring-1 ring-gray-200'" aria-label="White"></button>
-                            <button @click="selectColor('pink')" class="w-10 h-10 rounded-full focus:outline-none" :class="selectedColor === 'pink' ? 'ring-2 ring-brand ring-offset-2' : 'ring-1 ring-gray-200'" style="background-color: #f9a8d4;" aria-label="Pink"></button>
-                        </div>
-                    </div>
-                    <div class="mb-6">
-                        <button disabled class="w-full bg-gray-200 text-gray-500 font-medium text-sm py-4 rounded-md cursor-not-allowed">Add to cart</button>
-                        <p class="text-center text-xs text-gray-400 mt-3">No longer for sale — portfolio archive</p>
-                    </div>
-                    <div class="mb-8">
-                        <p class="text-[10px] uppercase tracking-wider text-gray-400 text-center mb-2">Secure checkout</p>
-                        <div class="flex items-center justify-center gap-2 flex-wrap">
-                            <span class="pay-mark" style="color:#1a1f71">VISA</span>
-                            <span class="pay-mark"><span style="color:#eb001b">●</span><span style="color:#f79e1b;margin-left:-4px">●</span></span>
-                            <span class="pay-mark" style="color:#2e77bc">AMEX</span>
-                            <span class="pay-mark" style="color:#003087">PayPal</span>
-                        </div>
-                    </div>
-                    <div class="space-y-3 mb-8">
-                        <p class="text-sm font-medium text-gray-900">Bundles <span class="text-gray-400 font-normal">(also inactive)</span></p>
-                        <div class="grid grid-cols-1 gap-2">
-                            <div class="flex items-center justify-between border border-gray-100 rounded-md px-3 py-3 bg-gray-50/60">
-                                <div>
-                                    <p class="text-sm text-gray-900 font-medium">2-pack</p>
-                                    <p class="text-xs text-gray-500">Any two colors</p>
-                                </div>
-                                <p class="text-sm text-gray-900">$8.99</p>
-                            </div>
-                            <div class="flex items-center justify-between border border-gray-100 rounded-md px-3 py-3 bg-gray-50/60">
-                                <div>
-                                    <p class="text-sm text-gray-900 font-medium">Family 3-pack</p>
-                                    <p class="text-xs text-gray-500">Blue, white, and pink</p>
-                                </div>
-                                <p class="text-sm text-gray-900">$12.99</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="border-t border-gray-100">
-                        <div x-data="{ open: true }" class="border-b border-gray-100">
-                            <button @click="open = !open" class="w-full py-4 flex justify-between items-center text-left text-sm font-medium text-gray-900">
-                                <span>The product</span>
-                                <i class="fa-solid text-xs text-brand/70" :class="open ? 'fa-minus' : 'fa-plus'"></i>
-                            </button>
-                            <div x-show="open" x-collapse class="pb-5 text-gray-600 text-sm leading-relaxed space-y-3">
-                                <p>During 2020–2022 most people stored a mask the same way they stored keys: loose, in fabric, against everything else in the bag. The case was a small rigid box for that problem.</p>
-                                <ul class="space-y-2 list-disc pl-4 marker:text-brand">
-                                    <li><strong>Hard shell.</strong> Keeps a folded mask off tabletops, linings, and phone screens.</li>
-                                    <li><strong>Pocket size.</strong> About 19 × 11 × 1.5 cm — wallet-adjacent, not bulky.</li>
-                                    <li><strong>Fits common masks.</strong> Standard surgical and typical KN95 folds.</li>
-                                    <li><strong>Wipe-clean PP.</strong> Soap or a disinfectant wipe between uses.</li>
-                                    <li><strong>Three colors.</strong> Blue, white, pink — same case, different lid.</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div x-data="{ open: false }" class="border-b border-gray-100">
-                            <button @click="open = !open" class="w-full py-4 flex justify-between items-center text-left text-sm font-medium text-gray-900">
-                                <span>Shipping &amp; returns</span>
-                                <i class="fa-solid text-xs text-gray-400" :class="open ? 'fa-minus' : 'fa-plus'"></i>
-                            </button>
-                            <div x-show="open" x-collapse class="pb-5 text-gray-600 text-sm leading-relaxed">
-                                <p class="mb-2">When the store was live, standard shipping was included worldwide.</p>
-                                <p>Orders could be returned within 30 days. This page is an archive; nothing ships from here.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <section class="bg-brand/[0.04] border-y border-brand/10 py-10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
-            <div>
-                <p class="text-sm font-medium text-gray-900">19 × 11 × 1.5 cm</p>
-                <p class="text-xs text-gray-500 mt-1">Fits a jacket pocket or sling bag</p>
-            </div>
-            <div>
-                <p class="text-sm font-medium text-gray-900">Surgical + KN95</p>
-                <p class="text-xs text-gray-500 mt-1">Designed around the masks people actually used</p>
-            </div>
-            <div>
-                <p class="text-sm font-medium text-gray-900">Wipe-clean plastic</p>
-                <p class="text-xs text-gray-500 mt-1">No fabric lining to hold moisture</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="bg-white py-16 lg:py-24">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-2xl mx-auto mb-12">
-                <h2 class="text-2xl sm:text-3xl font-semibold mb-4 text-gray-900 tracking-tight">Made for the in-between.</h2>
-                <p class="text-gray-500">On, off, stored. A case for the minutes a mask is not on your face.</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-                <div class="aspect-square bg-gray-50 rounded-lg overflow-hidden group">
-                    <img src="assets/03-Lifestyle-Hands-Loading.png" alt="Loading a mask into the case" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
-                </div>
-                <div class="aspect-square bg-gray-50 rounded-lg overflow-hidden group">
-                    <img src="assets/06-Lifestyle-Closing.png" alt="Closing the mask case" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
-                </div>
-                <div class="hidden lg:block aspect-square bg-gray-50 rounded-lg overflow-hidden group">
-                    <img src="assets/04-Lifestyle-All-Colors.png" alt="Blue, white, and pink cases" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="reviews" class="bg-gray-50 py-16 lg:py-24">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-2xl font-semibold mb-2 text-gray-900 tracking-tight">Customer reviews</h2>
-                <div class="flex items-center justify-center gap-1 text-brand text-sm mb-2">
-                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
-                </div>
-                <p class="text-gray-500 text-sm">4.8 out of 5 · 128 reviews from when the store was open</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-white p-6 rounded-lg shadow-sm">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex text-brand text-xs gap-0.5">
-                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                        </div>
-                        <span class="text-xs text-gray-400">Oct 12, 2022</span>
-                    </div>
-                    <h3 class="font-semibold text-gray-900 mb-2">Simple and effective</h3>
-                    <p class="text-sm text-gray-600 mb-4 leading-relaxed">I always felt off putting a mask straight into my bag. This is slim enough that it just lives with my keys.</p>
-                    <div class="flex items-center gap-2 text-xs text-gray-500">
-                        <span class="font-medium text-gray-900">Sarah J.</span>
-                        <span class="text-gray-300">|</span>
-                        <span class="text-gray-400">Verified buyer</span>
-                    </div>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-sm">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex text-brand text-xs gap-0.5">
-                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                        </div>
-                        <span class="text-xs text-gray-400">Sep 28, 2022</span>
-                    </div>
-                    <h3 class="font-semibold text-gray-900 mb-2">Worked on a long flight</h3>
-                    <p class="text-sm text-gray-600 mb-4 leading-relaxed">Bought a few for a trip. Useful on the plane when eating. Wipes clean.</p>
-                    <div class="flex items-center gap-2 text-xs text-gray-500">
-                        <span class="font-medium text-gray-900">Michael T.</span>
-                        <span class="text-gray-300">|</span>
-                        <span class="text-gray-400">Verified buyer</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer class="bg-white border-t border-gray-100 pt-16 pb-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
-                <div class="md:col-span-2">
-                    <img src="assets/logo.png" alt="Helpful Hygiene" class="h-6 mb-4">
-                    <p class="text-gray-500 text-sm max-w-xs leading-relaxed">A 2020 product, kept here as a portfolio piece. The store is closed.</p>
-                </div>
-                <div>
-                    <h4 class="text-gray-900 font-medium mb-4 text-sm">Archive</h4>
-                    <ul class="space-y-3 text-sm text-gray-500">
-                        <li>Mask Case</li>
-                        <li>About</li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-gray-900 font-medium mb-4 text-sm">Legal</h4>
-                    <ul class="space-y-3 text-sm text-gray-500">
-                        <li>Privacy</li>
-                        <li>Terms</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="border-t border-gray-100 pt-8">
-                <p class="text-xs text-gray-400">&copy; 2022 Helpful Hygiene™. Portfolio demonstration — not a live store.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('productPage', () => ({
-                selectedColor: 'blue',
-                currentImageIndex: 0,
-                commonImages: [
-                    'assets/03-Lifestyle-Hands-Loading.png',
-                    'assets/04-Lifestyle-All-Colors.png',
-                    'assets/05-Measurements.png',
-                    'assets/06-Lifestyle-Closing.png',
-                    'assets/07-Lifestyle-Color-Range.png'
-                ],
-                colorData: {
-                    'white': { images: ['assets/01-White-Closed-White-BG.jpg', 'assets/02-White-Open-White-BG.jpg'] },
-                    'blue': { images: ['assets/01-Blue-Closed-White-BG.jpg', 'assets/02-Blue-Open-White-BG.jpg'] },
-                    'pink': { images: ['assets/01-Pink-Closed-White-BG.jpg', 'assets/02-Pink-Open-White-BG.png'] }
-                },
-                get images() {
-                    return [...this.colorData[this.selectedColor].images, ...this.commonImages];
-                },
-                selectColor(color) {
-                    this.selectedColor = color;
-                    this.currentImageIndex = 0;
-                }
-            }))
-        })
-    </script>
-</body>
-</html>
+<div class="bg-brand text-white text-center py-2 text-xs font-medium tracking-wide">📦 Worldwide shipping included on orders of $12.99+</div>
+<header class="header-bar sticky top-0 z-50 border-b border-gray-100 bg-white" :class="scrolled && 'is-red'">
+<div class="max-w-7xl mx-auto px-4 h-14 sm:h-16 flex items-center justify-between">
+<div class="flex-1"><button class="mr-4 text-gray-500" aria-label="Menu" @click="menuOpen=!menuOpen"><i class="fa-solid fa-bars text-lg"></i></button></div>
+<div class="flex-shrink-0"><img src="assets/logo.png" alt="Helpful Hygiene" class="h-7 sm:h-8 w-auto"></div>
+<div class="flex-1 flex justify-end"><button class="relative" :class="cartPulse && 'cart-bounce'" aria-label="Cart" @click="cartPulse=true;setTimeout(()=>cartPulse=false,450)"><i class="fa-solid fa-bag-shopping text-xl"></i><span class="absolute -top-1 -right-1.5 bg-brand text-white text-[9px] font-bold h-3.5 w-3.5 rounded-full flex items-center justify-center" x-text="cartCount"></span></button></div>
+</div>
+<div x-show="menuOpen" class="px-6 py-3 text-sm"><p class="opacity-80">Shop · About · Contact</p></div>
+</header>
+<main class="max-w-7xl mx-auto px-4 py-4 lg:py-8">
+<div class="lg:flex lg:gap-12">
+<div class="lg:w-3/5 mb-5 lg:mb-0">
+<div class="lg:hidden">
+<div class="aspect-[5/4] bg-gray-50 rounded-lg overflow-hidden mb-3"><img :src="images[currentImageIndex]" alt="Helpful Hygiene Mask Case" class="w-full h-full object-cover"></div>
+<div class="flex gap-2 overflow-x-auto hide-scrollbar">
+<template x-for="(img,index) in images" :key="index">
+<button @click="currentImageIndex=index" class="w-14 h-14 flex-shrink-0 rounded-md border overflow-hidden" :class="currentImageIndex===index?'border-brand':'border-transparent opacity-60'"><img :src="img" class="w-full h-full object-cover"></button>
+</template>
+</div>
+</div>
+<div class="hidden lg:grid grid-cols-2 gap-4">
+<template x-for="(img,index) in images" :key="index">
+<div class="aspect-square bg-gray-50 rounded-lg overflow-hidden" :class="index===0?'col-span-2 aspect-[4/3]':''"><img :src="img" class="w-full h-full object-cover hover:scale-[1.03] transition duration-500"></div>
+</template>
+</div>
+</div>
+<div class="lg:w-2/5">
+<div class="lg:sticky lg:top-24">
+<div class="flex items-center gap-2 mb-2"><div class="flex text-brand text-xs gap-0.5"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></div>
+<button class="text-xs text-gray-500 border-b border-gray-300" @click="document.getElementById('reviews').scrollIntoView({behavior:'smooth'})">128 reviews</button></div>
+<p class="text-[11px] uppercase tracking-[0.16em] text-brand font-semibold mb-1">Helpful Hygiene™</p>
+<h1 class="product-title text-2xl sm:text-3xl font-semibold text-gray-900 mb-2">Helpful Hygiene Mask Case</h1>
+<div class="flex items-baseline gap-3 mb-4"><span class="text-2xl font-semibold">$4.99</span><span class="text-sm text-gray-400 line-through">$9.99</span><span class="text-[11px] font-semibold text-brand bg-brand/10 px-2 py-0.5 rounded-full">50% off</span></div>
+<p class="text-gray-600 text-sm mb-5 leading-relaxed">Keep a clean mask ready in your bag. This hard case holds a surgical or KN95 mask, wipes clean, and fits in a pocket.</p>
+<div class="mb-5 border-t border-gray-100 pt-5"><span class="text-sm">Color: <span class="font-medium capitalize" x-text="selectedColor"></span></span>
+<div class="flex gap-3 mt-3">
+<button @click="selectColor('blue')" class="w-10 h-10 rounded-full" :class="selectedColor==='blue'?'ring-2 ring-brand ring-offset-2':'ring-1 ring-gray-200'" style="background-color:#93c5fd"></button>
+<button @click="selectColor('white')" class="w-10 h-10 rounded-full bg-white" :class="selectedColor==='white'?'ring-2 ring-brand ring-offset-2':'ring-1 ring-gray-200'"></button>
+<button @click="selectColor('pink')" class="w-10 h-10 rounded-full" :class="selectedColor==='pink'?'ring-2 ring-brand ring-offset-2':'ring-1 ring-gray-200'" style="background-color:#f9a8d4"></button>
+</div></div>
+<div class="mb-5"><p class="text-sm font-medium mb-2">Bundles</p>
+<div class="grid grid-cols-2 gap-2">
+<button @click="selectedBundle='2'" class="text-left border rounded-md px-3 py-3" :class="selectedBundle==='2'?'border-brand bg-brand/5':'border-gray-100'"><p class="text-sm font-medium">2-pack</p><p class="text-xs text-gray-500">Any two colors</p><p class="text-sm mt-1">$8.99</p></button>
+<button @click="selectedBundle='3'" class="text-left border rounded-md px-3 py-3" :class="selectedBundle==='3'?'border-brand bg-brand/5':'border-gray-100'"><p class="text-sm font-medium">Family 3-pack</p><p class="text-xs text-gray-500">Blue, white, pink</p><p class="text-sm mt-1">$12.99</p></button>
+</div></div>
+<button type="button" class="atc-btn w-full bg-brand hover:bg-brand-dark text-white font-medium text-sm py-4 rounded-md" @click="addToCart()">Add to cart</button>
+<p class="text-center text-xs text-brand/70 mt-3 font-medium">Portfolio piece — checkout is a demo</p>
+<div class="mt-4 mb-6"><p class="text-[10px] uppercase tracking-wider text-gray-400 text-center mb-2">Secure checkout</p>
+<div class="flex justify-center gap-2"><span class="pay-mark" style="color:#1a1f71">VISA</span><span class="pay-mark">●●</span><span class="pay-mark" style="color:#2e77bc">AMEX</span><span class="pay-mark" style="color:#003087">PayPal</span></div></div>
+<div class="border-t border-gray-100">
+<div x-data="{open:true}" class="border-b border-gray-100">
+<button @click="open=!open" class="w-full py-4 flex justify-between text-sm font-medium"><span>The product</span><i class="fa-solid text-xs text-brand/70" :class="open?'fa-minus':'fa-plus'"></i></button>
+<div x-show="open" class="pb-5 text-gray-600 text-sm space-y-3"><p>A used mask does not belong in a pocket. This small hard box keeps a mask clean until you need it again.</p>
+<ul class="space-y-2 list-disc pl-4 marker:text-brand"><li><strong>Hard shell.</strong> Keeps a folded mask off tables, bags, and phone screens.</li><li><strong>Pocket size.</strong> About 19 × 11 × 1.5 cm.</li><li><strong>Fits common masks.</strong> Surgical and typical KN95 folds.</li><li><strong>Easy to clean.</strong> Soap or a wipe between uses.</li><li><strong>Three colors.</strong> Blue, white, and pink.</li></ul></div></div>
+<div x-data="{open:false}" class="border-b border-gray-100">
+<button @click="open=!open" class="w-full py-4 flex justify-between text-sm font-medium"><span>Shipping & returns</span><i class="fa-solid text-xs text-gray-400" :class="open?'fa-minus':'fa-plus'"></i></button>
+<div x-show="open" class="pb-5 text-gray-600 text-sm"><p class="mb-2">Orders of $12.99 or more include worldwide shipping.</p><p>Return unused items within 30 days.</p></div></div>
+</div></div></div></div>
+</main>
+<section class="bg-brand/[0.04] border-y border-brand/10 py-10">
+<div class="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
+<div><p class="text-sm font-medium">19 × 11 × 1.5 cm</p><p class="text-xs text-gray-500 mt-1">Fits a jacket pocket or small bag</p></div>
+<div><p class="text-sm font-medium">Surgical + KN95</p><p class="text-xs text-gray-500 mt-1">Made for the masks people use most</p></div>
+<div><p class="text-sm font-medium">Wipe-clean plastic</p><p class="text-xs text-gray-500 mt-1">No fabric lining that holds moisture</p></div>
+</div></section>
+<section class="bg-white py-16">
+<div class="max-w-7xl mx-auto px-4">
+<div class="text-center max-w-2xl mx-auto mb-12"><h2 class="text-2xl font-semibold mb-4">For the time in between.</h2><p class="text-gray-500">On. Off. Stored. A case for the minutes a mask is not on your face.</p></div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+<div class="aspect-square bg-gray-50 rounded-lg overflow-hidden"><img src="assets/03-Lifestyle-Hands-Loading.png" class="w-full h-full object-cover"></div>
+<div class="aspect-square bg-gray-50 rounded-lg overflow-hidden"><img src="assets/06-Lifestyle-Closing.png" class="w-full h-full object-cover"></div>
+<div class="hidden lg:block aspect-square bg-gray-50 rounded-lg overflow-hidden"><img src="assets/04-Lifestyle-All-Colors.png" class="w-full h-full object-cover"></div>
+</div></div></section>
+<section id="reviews" class="bg-gray-50 py-14" x-data="reviewsBlock()">
+<div class="max-w-3xl mx-auto px-4">
+<div class="text-center mb-8"><h2 class="text-2xl font-semibold mb-2">Customer reviews</h2>
+<div class="flex justify-center gap-1 text-brand text-sm mb-2"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></div>
+<p class="text-gray-500 text-sm">4.8 out of 5 · 128 reviews</p></div>
+<div class="bg-white p-5 rounded-lg shadow-sm min-h-[170px]">
+<div class="flex justify-between mb-3"><div class="flex text-brand text-xs gap-0.5"><template x-for="n in reviews[index].stars" :key="n"><i class="fa-solid fa-star"></i></template></div><span class="text-xs text-gray-400" x-text="reviews[index].date"></span></div>
+<h3 class="font-semibold mb-2" x-text="reviews[index].title"></h3>
+<p class="text-sm text-gray-600 mb-4" x-text="reviews[index].body"></p>
+<div class="flex gap-2 text-xs text-gray-500"><span class="font-medium text-gray-900" x-text="reviews[index].name"></span><span>|</span><span>Verified buyer</span></div>
+</div>
+<div class="flex items-center justify-between mt-4">
+<button class="text-sm text-gray-500" @click="prev()">‹ Prev</button>
+<div class="flex gap-1.5"><template x-for="(r,i) in reviews" :key="i"><button class="w-1.5 h-1.5 rounded-full" :class="i===index?'bg-brand':'bg-gray-300'" @click="index=i"></button></template></div>
+<button class="text-sm text-gray-500" @click="next()">Next ›</button>
+</div>
+<p class="text-center text-[11px] text-gray-400 mt-3" x-text="(index+1)+' / '+reviews.length"></p>
+</div></section>
+<footer class="bg-white border-t pt-16 pb-8"><div class="max-w-7xl mx-auto px-4"><p class="text-xs text-gray-400">&copy; 2026 Helpful Hygiene™</p></div></footer>
+<script>
+document.addEventListener('alpine:init',()=>{
+Alpine.data('productPage',()=>({
+selectedColor:'blue',selectedBundle:null,currentImageIndex:0,cartCount:0,cartPulse:false,menuOpen:false,scrolled:false,
+commonImages:['assets/03-Lifestyle-Hands-Loading.png','assets/04-Lifestyle-All-Colors.png','assets/05-Measurements.png','assets/06-Lifestyle-Closing.png','assets/07-Lifestyle-Color-Range.png'],
+colorData:{white:{images:['assets/01-White-Closed-White-BG.jpg','assets/02-White-Open-White-BG.jpg']},blue:{images:['assets/01-Blue-Closed-White-BG.jpg','assets/02-Blue-Open-White-BG.jpg']},pink:{images:['assets/01-Pink-Closed-White-BG.jpg','assets/02-Pink-Open-White-BG.png']}},
+get images(){return [...this.colorData[this.selectedColor].images,...this.commonImages]},
+selectColor(c){this.selectedColor=c;this.currentImageIndex=0},
+addToCart(){this.cartCount+=this.selectedBundle==='3'?3:this.selectedBundle==='2'?2:1;this.cartPulse=true;setTimeout(()=>this.cartPulse=false,450)},
+init(){const onScroll=()=>{this.scrolled=window.scrollY>40};window.addEventListener('scroll',onScroll,{passive:true});onScroll()}
+}));
+Alpine.data('reviewsBlock',()=>({
+index:0,
+reviews:[
+{stars:5,date:'Oct 12, 2022',title:'Simple and useful',name:'Sarah J.',body:'I did not like putting a mask in my bag. This case is thin and stays with my keys.'},
+{stars:5,date:'Sep 28, 2022',title:'Good on a long flight',name:'Michael T.',body:'I bought a few for a trip. Helpful on the plane when I eat. Easy to wipe.'},
+{stars:5,date:'Sep 14, 2022',title:'Fits in a jacket',name:'Elena R.',body:'Small enough for a coat pocket. The hard lid keeps the mask flat.'},
+{stars:4,date:'Aug 30, 2022',title:'Clean and light',name:'Jonas K.',body:'Plastic wipes down fast. I keep one in the car and one in my work bag.'},
+{stars:5,date:'Aug 11, 2022',title:'Gifted the 3-pack',name:'Priya S.',body:'Sent one color to each person at home. Everyone knew which case was theirs.'},
+{stars:5,date:'Jul 22, 2022',title:'No more loose masks',name:'David L.',body:'Stops the mask from touching everything else in the bag.'},
+{stars:4,date:'Jul 02, 2022',title:'Does what it says',name:'Anna M.',body:'Not fancy. Just a hard box that works. That is all I wanted.'},
+{stars:5,date:'Jun 18, 2022',title:'Office desk staple',name:'Chris P.',body:'Sits next to my keyboard. I close it when I leave the room.'},
+{stars:5,date:'May 29, 2022',title:'Kids can use it',name:'Laura B.',body:'My daughter can open and close it on her own. Pink was an easy pick.'},
+{stars:4,date:'May 09, 2022',title:'Ships as promised',name:'Omar H.',body:'Arrived quickly. Case looks like the photos. I bought a second color after.'}
+],
+next(){this.index=(this.index+1)%this.reviews.length},
+prev(){this.index=(this.index-1+this.reviews.length)%this.reviews.length}
+}));
+});
+</script>
+</body></html>
