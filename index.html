@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#e63946">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Helpful Hygiene™</title>
 <link rel="icon" href="assets/favicon.png" type="image/png">
 <script src="https://cdn.tailwindcss.com"></script>
@@ -17,10 +16,6 @@ body{font-family:Inter,sans-serif}
 .hide-scrollbar::-webkit-scrollbar{display:none}
 .hide-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
 .pay-mark{height:22px;min-width:36px;padding:0 7px;border:1px solid #e5e7eb;border-radius:4px;background:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#374151}
-.header-bar{transition:background-color .35s ease,border-color .35s ease}
-.header-bar.is-red{background-color:#e63946;border-color:#e63946;color:#fff}
-.header-bar.is-red img{filter:brightness(0) invert(1)}
-.header-bar.is-red button{color:#fff}
 .atc-btn{transition:transform .12s ease}
 .atc-btn:active{transform:scale(.97)}
 .cart-bounce{animation:cartpop .45s ease}
@@ -30,7 +25,7 @@ body{font-family:Inter,sans-serif}
 </head>
 <body class="bg-white text-gray-800" x-data="productPage()">
 <div class="bg-brand text-white text-center py-2 text-xs font-medium tracking-wide">📦 Worldwide shipping included on orders of $12.99+</div>
-<header class="header-bar sticky top-0 z-50 border-b border-gray-100 bg-white" :class="scrolled && 'is-red'">
+<header class="sticky top-0 z-50 border-b border-gray-100 bg-white">
 <div class="max-w-7xl mx-auto px-4 h-14 sm:h-16 flex items-center justify-between">
 <div class="flex-1"><button class="mr-4 text-gray-500" aria-label="Menu" @click="menuOpen=!menuOpen"><i class="fa-solid fa-bars text-lg"></i></button></div>
 <div class="flex-shrink-0"><img src="assets/logo.png" alt="Helpful Hygiene" class="h-7 sm:h-8 w-auto"></div>
@@ -69,10 +64,12 @@ body{font-family:Inter,sans-serif}
 <button @click="selectColor('white')" class="w-10 h-10 rounded-full bg-white" :class="selectedColor==='white'?'ring-2 ring-brand ring-offset-2':'ring-1 ring-gray-200'"></button>
 <button @click="selectColor('pink')" class="w-10 h-10 rounded-full" :class="selectedColor==='pink'?'ring-2 ring-brand ring-offset-2':'ring-1 ring-gray-200'" style="background-color:#f9a8d4"></button>
 </div></div>
-<div class="mb-5"><p class="text-sm font-medium mb-2">Bundles</p>
-<div class="grid grid-cols-2 gap-2">
-<button @click="selectedBundle='2'" class="text-left border rounded-md px-3 py-3" :class="selectedBundle==='2'?'border-brand bg-brand/5':'border-gray-100'"><p class="text-sm font-medium">2-pack</p><p class="text-xs text-gray-500">Any two colors</p><p class="text-sm mt-1">$8.99</p></button>
-<button @click="selectedBundle='3'" class="text-left border rounded-md px-3 py-3" :class="selectedBundle==='3'?'border-brand bg-brand/5':'border-gray-100'"><p class="text-sm font-medium">Family 3-pack</p><p class="text-xs text-gray-500">Blue, white, pink</p><p class="text-sm mt-1">$12.99</p></button>
+<div class="mb-4">
+<p class="text-[11px] uppercase tracking-wider text-gray-400 mb-2">Bundles</p>
+<div class="grid grid-cols-3 gap-1.5">
+<button @click="selectedBundle='1'" class="text-center border rounded px-1.5 py-2" :class="selectedBundle==='1'?'border-brand text-gray-900':'border-gray-200 text-gray-500'"><p class="text-[11px] font-medium">1</p><p class="text-[10px]">$4.99</p></button>
+<button @click="selectedBundle='2'" class="text-center border rounded px-1.5 py-2" :class="selectedBundle==='2'?'border-brand text-gray-900':'border-gray-200 text-gray-500'"><p class="text-[11px] font-medium">2-pack</p><p class="text-[10px]">$8.99</p></button>
+<button @click="selectedBundle='3'" class="text-center border rounded px-1.5 py-2" :class="selectedBundle==='3'?'border-brand text-gray-900':'border-gray-200 text-gray-500'"><p class="text-[11px] font-medium">3-pack</p><p class="text-[10px]">$12.99</p></button>
 </div></div>
 <button type="button" class="atc-btn w-full bg-brand hover:bg-brand-dark text-white font-medium text-sm py-4 rounded-md" @click="addToCart()">Add to cart</button>
 <p class="text-center text-xs text-brand/70 mt-3 font-medium">Portfolio piece — checkout is a demo</p>
@@ -103,37 +100,41 @@ body{font-family:Inter,sans-serif}
 <div class="hidden lg:block aspect-square bg-gray-50 rounded-lg overflow-hidden"><img src="assets/04-Lifestyle-All-Colors.png" class="w-full h-full object-cover"></div>
 </div></div></section>
 <section id="reviews" class="bg-gray-50 py-14" x-data="reviewsBlock()">
-<div class="max-w-3xl mx-auto px-4">
+<div class="max-w-4xl mx-auto px-4">
 <div class="text-center mb-8"><h2 class="text-2xl font-semibold mb-2">Customer reviews</h2>
 <div class="flex justify-center gap-1 text-brand text-sm mb-2"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></div>
 <p class="text-gray-500 text-sm">4.8 out of 5 · 128 reviews</p></div>
-<div class="bg-white p-5 rounded-lg shadow-sm min-h-[170px]">
-<div class="flex justify-between mb-3"><div class="flex text-brand text-xs gap-0.5"><template x-for="n in reviews[index].stars" :key="n"><i class="fa-solid fa-star"></i></template></div><span class="text-xs text-gray-400" x-text="reviews[index].date"></span></div>
-<h3 class="font-semibold mb-2" x-text="reviews[index].title"></h3>
-<p class="text-sm text-gray-600 mb-4" x-text="reviews[index].body"></p>
-<div class="flex gap-2 text-xs text-gray-500"><span class="font-medium text-gray-900" x-text="reviews[index].name"></span><span>|</span><span>Verified buyer</span></div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<template x-for="(rev, i) in visibleReviews" :key="rev.name + i">
+<div class="bg-white p-5 rounded-lg shadow-sm" :class="i===1 ? 'hidden md:block' : ''">
+<div class="flex justify-between mb-3"><div class="flex text-brand text-xs gap-0.5"><template x-for="n in rev.stars" :key="n"><i class="fa-solid fa-star"></i></template></div><span class="text-xs text-gray-400" x-text="rev.date"></span></div>
+<h3 class="font-semibold mb-2" x-text="rev.title"></h3>
+<p class="text-sm text-gray-600 mb-4" x-text="rev.body"></p>
+<div class="flex gap-2 text-xs text-gray-500"><span class="font-medium text-gray-900" x-text="rev.name"></span><span>|</span><span>Verified buyer</span></div>
+</div>
+</template>
 </div>
 <div class="flex items-center justify-between mt-4">
 <button class="text-sm text-gray-500" @click="prev()">‹ Prev</button>
 <div class="flex gap-1.5"><template x-for="(r,i) in reviews" :key="i"><button class="w-1.5 h-1.5 rounded-full" :class="i===index?'bg-brand':'bg-gray-300'" @click="index=i"></button></template></div>
 <button class="text-sm text-gray-500" @click="next()">Next ›</button>
 </div>
-<p class="text-center text-[11px] text-gray-400 mt-3" x-text="(index+1)+' / '+reviews.length"></p>
 </div></section>
 <footer class="bg-white border-t pt-16 pb-8"><div class="max-w-7xl mx-auto px-4"><p class="text-xs text-gray-400">&copy; 2026 Helpful Hygiene™</p></div></footer>
 <script>
 document.addEventListener('alpine:init',()=>{
 Alpine.data('productPage',()=>({
-selectedColor:'blue',selectedBundle:null,currentImageIndex:0,cartCount:0,cartPulse:false,menuOpen:false,scrolled:false,
+selectedColor:'blue',selectedBundle:'1',currentImageIndex:0,cartCount:0,cartPulse:false,menuOpen:false,
 commonImages:['assets/03-Lifestyle-Hands-Loading.png','assets/04-Lifestyle-All-Colors.png','assets/05-Measurements.png','assets/06-Lifestyle-Closing.png','assets/07-Lifestyle-Color-Range.png'],
 colorData:{white:{images:['assets/01-White-Closed-White-BG.jpg','assets/02-White-Open-White-BG.jpg']},blue:{images:['assets/01-Blue-Closed-White-BG.jpg','assets/02-Blue-Open-White-BG.jpg']},pink:{images:['assets/01-Pink-Closed-White-BG.jpg','assets/02-Pink-Open-White-BG.png']}},
 get images(){return [...this.colorData[this.selectedColor].images,...this.commonImages]},
 selectColor(c){this.selectedColor=c;this.currentImageIndex=0},
-addToCart(){this.cartCount+=this.selectedBundle==='3'?3:this.selectedBundle==='2'?2:1;this.cartPulse=true;setTimeout(()=>this.cartPulse=false,450)},
-init(){const onScroll=()=>{this.scrolled=window.scrollY>40};window.addEventListener('scroll',onScroll,{passive:true});onScroll()}
+addToCart(){this.cartCount+=this.selectedBundle==='3'?3:this.selectedBundle==='2'?2:1;this.cartPulse=true;setTimeout(()=>this.cartPulse=false,450)}
 }));
 Alpine.data('reviewsBlock',()=>({
 index:0,
+get perPage(){ return window.innerWidth >= 768 ? 2 : 1; },
+get visibleReviews(){ const n=this.perPage; return Array.from({length:n},(_,i)=>this.reviews[(this.index+i)%this.reviews.length]); },
 reviews:[
 {stars:5,date:'Oct 12, 2022',title:'Simple and useful',name:'Sarah J.',body:'I did not like putting a mask in my bag. This case is thin and stays with my keys.'},
 {stars:5,date:'Sep 28, 2022',title:'Good on a long flight',name:'Michael T.',body:'I bought a few for a trip. Helpful on the plane when I eat. Easy to wipe.'},
@@ -146,8 +147,8 @@ reviews:[
 {stars:5,date:'May 29, 2022',title:'Kids can use it',name:'Laura B.',body:'My daughter can open and close it on her own. Pink was an easy pick.'},
 {stars:4,date:'May 09, 2022',title:'Ships as promised',name:'Omar H.',body:'Arrived quickly. Case looks like the photos. I bought a second color after.'}
 ],
-next(){this.index=(this.index+1)%this.reviews.length},
-prev(){this.index=(this.index-1+this.reviews.length)%this.reviews.length}
+next(){this.index=(this.index+this.perPage)%this.reviews.length},
+prev(){this.index=(this.index-this.perPage+this.reviews.length)%this.reviews.length}
 }));
 });
 </script>
